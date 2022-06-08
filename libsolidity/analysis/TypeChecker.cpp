@@ -3720,17 +3720,30 @@ void TypeChecker::endVisit(Literal const& _literal)
 			)
 			{
 				auto&& [mantissa, exponent] = dynamic_cast<RationalNumberType const*>(type)->mantissaExponent();
-				solAssert(mantissa && exponent);
-				if (
-					functionType.parameterTypes().size() != 2 ||
-					!mantissa->isImplicitlyConvertibleTo(*functionType.parameterTypes().front()) ||
-					!exponent->isImplicitlyConvertibleTo(*functionType.parameterTypes().at(1))
-				)
+				if (!mantissa)
 					m_errorReporter.typeError(
-						4778_error,
+						// TODO: New error code
+						0000_error,
 						_literal.location(),
-						"TODO Fractional number, types to do match."
+						"Fractional number cannot be decomposed into a mantissa and decimal exponent "
+						"that fit the range of parameters of the literal suffix."
 					);
+				else
+				{
+					// TODO: mantissaExponent() should just return an optional pair
+					solAssert(exponent);
+
+					if (
+						functionType.parameterTypes().size() != 2 ||
+						!mantissa->isImplicitlyConvertibleTo(*functionType.parameterTypes().front()) ||
+						!exponent->isImplicitlyConvertibleTo(*functionType.parameterTypes().at(1))
+					)
+						m_errorReporter.typeError(
+							4778_error,
+							_literal.location(),
+							"TODO Fractional number, types to do match."
+						);
+				}
 			}
 			else
 				if (

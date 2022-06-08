@@ -14,7 +14,7 @@ contract C {
         // 0.1 e;      // TODO: Unimplemented
         // 0.100000 e; // TODO: Unimplemented
         // 0.123456 e; // TODO: Unimplemented
-        // 0.99999999999999999999999999999999999999999999999999999999999999999999999999999999999 e; // TODO: Causes an ICE
+        0.99999999999999999999999999999999999999999999999999999999999999999999999999999999999 e; // TODO: Causes an ICE
 
         // Number with separators
         // 1_2_3_4_5_6_7_8_9_0.1_2_3_4_5_6_7_8_9_0 e; // TODO: Unimplemented
@@ -58,3 +58,5 @@ contract C {
         //10_000_000_000.1e-0_0_0_1_0 e;              // TODO: Unimplemented
     }
 }
+// ----
+// TypeError 0: (531-618): Fractional number cannot be decomposed into a mantissa and decimal exponent that fit the range of parameters of the literal suffix.
