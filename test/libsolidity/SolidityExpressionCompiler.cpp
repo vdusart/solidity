@@ -125,7 +125,7 @@ bytes compileFirstExpression(
 
 	ErrorList errors;
 	ErrorReporter errorReporter(errors);
-	GlobalContext globalContext;
+	GlobalContext globalContext{false};
 	Scoper::assignScopes(*sourceUnit);
 	BOOST_REQUIRE(SyntaxChecker(errorReporter, false).checkSyntax(*sourceUnit));
 	NameAndTypeResolver resolver(globalContext, solidity::test::CommonOptions::get().evmVersion(), errorReporter);
