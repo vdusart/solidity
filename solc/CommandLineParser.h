@@ -175,6 +175,7 @@ struct CommandLineOptions
 		FileReader::FileSystemPathSet allowedDirectories;
 		bool ignoreMissingFiles = false;
 		bool errorRecovery = false;
+		bool stdlib = false;
 	} input;
 
 	struct

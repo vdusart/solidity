@@ -48,6 +48,7 @@ static string const g_strEVM = "evm";
 static string const g_strEVMVersion = "evm-version";
 static string const g_strEwasm = "ewasm";
 static string const g_strViaIR = "via-ir";
+static string const g_strStdlib = "experimental-stdlib";
 static string const g_strExperimentalViaIR = "experimental-via-ir";
 static string const g_strGas = "gas";
 static string const g_strHelp = "help";
@@ -584,6 +585,10 @@ General Information)").c_str(),
 		(
 			g_strViaIR.c_str(),
 			"Turn on compilation mode via the IR."
+		)
+		(
+			g_strStdlib.c_str(),
+			"Enable the stdlib mode."
 		)
 		(
 			g_strRevertStrings.c_str(),
@@ -1198,6 +1203,11 @@ void CommandLineParser::processArgs()
 			CommandLineValidationError,
 			"--" + g_strYulDialect + " and --" + g_strMachine + " are only valid in assembly mode."
 		);
+
+	if (m_args.count(g_strStdlib))
+	{
+		m_options.input.stdlib = true;
+	}
 
 	if (m_args.count(g_strMetadataHash))
 	{
