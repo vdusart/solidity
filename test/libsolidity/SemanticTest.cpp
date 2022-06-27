@@ -107,6 +107,8 @@ SemanticTest::SemanticTest(
 
 	m_allowNonExistingFunctions = m_reader.boolSetting("allowNonExistingFunctions", false);
 
+	m_compiler.setStdlib(m_reader.boolSetting("stdlib", false));
+
 	parseExpectations(m_reader.stream());
 	soltestAssert(!m_tests.empty(), "No tests specified in " + _filename);
 
