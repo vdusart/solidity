@@ -351,6 +351,10 @@ bool CompilerStack::parse()
 
 	if (m_stdlib)
 	{
+		if (m_evmVersion < EVMVersion::constantinople())
+		{
+			solThrow(CompilerError, "Stdlib requires Constantinople EVM version at the minimum.");
+		}
 		for (auto [name, content]: solidity::solstdlib::sources)
 		{
 			m_sources[name].charStream = make_unique<CharStream>(content, name);

@@ -107,7 +107,13 @@ SemanticTest::SemanticTest(
 
 	m_allowNonExistingFunctions = m_reader.boolSetting("allowNonExistingFunctions", false);
 
-	m_compiler.setStdlib(m_reader.boolSetting("stdlib", false));
+	bool stdlib = m_reader.boolSetting("stdlib", false);
+	if (stdlib)
+	{
+		if (m_evmVersion < EVMVersion::constantinople())
+			BOOST_THROW_EXCEPTION(runtime_error("Stdlib requires Constantinople EVM version at the minimum."));
+		m_compiler.setStdlib(stdlib);
+	}
 
 	parseExpectations(m_reader.stream());
 	soltestAssert(!m_tests.empty(), "No tests specified in " + _filename);
