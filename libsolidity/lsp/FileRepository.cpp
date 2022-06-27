@@ -54,6 +54,13 @@ string FileRepository::sourceUnitNameToUri(string const& _sourceUnitName) const
 {
 	regex const windowsDriveLetterPath("^[a-zA-Z]:/");
 
+	auto const ensurePathIsUnixLike = [&](string inputPath) -> string {
+		if (!regex_search(inputPath, windowsDriveLetterPath))
+			return inputPath;
+		else
+			return "/" + move(inputPath);
+	};
+
 	if (m_sourceUnitNamesToUri.count(_sourceUnitName))
 	{
 		solAssert(boost::starts_with(m_sourceUnitNamesToUri.at(_sourceUnitName), "file://"), "");
@@ -69,7 +76,7 @@ string FileRepository::sourceUnitNameToUri(string const& _sourceUnitName) const
 		auto const resolvedPath = tryResolvePath(_sourceUnitName);
 		resolvedPath.message().empty()
 	)
-		return "file://" + resolvedPath.get().generic_string();
+		return "file://" + ensurePathIsUnixLike(resolvedPath.get().generic_string());
 	else if (m_basePath.generic_string() != "/")
 		return "file://" + m_basePath.generic_string() + "/" + _sourceUnitName;
 	else
