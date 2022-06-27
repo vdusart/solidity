@@ -70,8 +70,6 @@ string FileRepository::sourceUnitNameToUri(string const& _sourceUnitName) const
 		return _sourceUnitName;
 	else if (regex_search(_sourceUnitName, windowsDriveLetterPath))
 		return "file:///" + _sourceUnitName;
-	else if (_sourceUnitName.find("/") == 0)
-		return "file://" + _sourceUnitName;
 	else if (
 		auto const resolvedPath = tryResolvePath(_sourceUnitName);
 		resolvedPath.message().empty()
