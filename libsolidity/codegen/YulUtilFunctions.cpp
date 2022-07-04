@@ -698,8 +698,8 @@ string YulUtilFunctions::overflowCheckedIntMulFunction(IntegerType const& _type)
 					</gt128bit>
 				<!signed>
 					<?gt128bit>
-						// overflow, if x != 0 and y > (maxValue / x)
-						if and(iszero(iszero(x)), gt(y, div(<maxValue>, x))) { <panic>() }
+						// overflow, if x != 0 and y != product/x
+						if and(iszero(iszero(x)), iszero(eq(y, div(product, x)))) { <panic>() }
 					<!gt128bit>
 						if gt(product, <maxValue>) { <panic>() }
 					</gt128bit>

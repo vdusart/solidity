@@ -9,9 +9,8 @@ Overflow checked unsigned integer multiplication.
 
 # Approximation with 16-bit base types.
 n_bits = 16
-type_bits = 4
 
-while type_bits <= n_bits:
+for type_bits in [4, 8, 12, 16]:
 
 	rule = Rule()
 
@@ -36,5 +35,3 @@ while type_bits <= n_bits:
 	else:
 		overflow_check = GT(product, maxValue)
 	rule.check(overflow_check != 0, actual_overflow)
-
-	type_bits += 4

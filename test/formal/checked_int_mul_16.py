@@ -9,9 +9,8 @@ Overflow checked signed integer multiplication.
 
 # Approximation with 16-bit base types.
 n_bits = 16
-type_bits = 4
 
-while type_bits <= n_bits:
+for type_bits in [4, 8, 12, 16]:
 
 	rule = Rule()
 
@@ -46,5 +45,3 @@ while type_bits <= n_bits:
 
 	rule.check(actual_overflow, Or(overflow_check_1 != 0, overflow_check_2 != 0))
 	rule.check(actual_underflow, Or(underflow_check_1 != 0, underflow_check_2 != 0))
-
-	type_bits += 4
