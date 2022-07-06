@@ -3889,6 +3889,7 @@ void TypeChecker::endVisit(UsingForDirective const& _usingFor)
 					TokenTraits::friendlyName(*operator_) +
 					"."
 				);
+
 			if (
 				(isUnaryNegation || (TokenTraits::isUnaryOp(*operator_) && *operator_ != Token::Add)) &&
 				functionType->parameterTypesIncludingSelf().size() != 1
@@ -3901,21 +3902,29 @@ void TypeChecker::endVisit(UsingForDirective const& _usingFor)
 					TokenTraits::friendlyName(*operator_) +
 					"."
 				);
-			Type const* expectedType =
-				TokenTraits::isCompareOp(*operator_) ?
-				dynamic_cast<Type const*>(TypeProvider::boolean()) :
-				functionType->parameterTypesIncludingSelf().at(0);
 
 			if (
-				functionType->returnParameterTypes().size() != 1 ||
-				*functionType->returnParameterTypes().front() != *expectedType
+				TokenTraits::isCompareOp(*operator_) &&
+				(functionType->returnParameterTypes().size() != 1 || *functionType->returnParameterTypes().front() != *TypeProvider::boolean())
+			)
+				m_errorReporter.typeError(
+					7995_error,
+					path->location(),
+					"The function \"" + joinHumanReadable(path->path(), ".") + "\" "+
+					"needs to return exactly one value of type bool" +
+					" to be used for the operator " +
+					TokenTraits::friendlyName(*operator_) +
+					"."
+				);
+
+			if (
+				functionType->returnParameterTypes().size() != 1
 			)
 				m_errorReporter.typeError(
 					7743_error,
 					path->location(),
 					"The function \"" + joinHumanReadable(path->path(), ".") + "\" "+
-					"needs to return exactly one value of type " +
-					expectedType->toString(true) +
+					"needs to return exactly one value " +
 					" to be used for the operator " +
 					TokenTraits::friendlyName(*operator_) +
 					"."
